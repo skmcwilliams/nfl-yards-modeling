@@ -7,6 +7,7 @@ run_regression <- function(dataframe, name) {
     plot(fitted(model), resid(model), col = "green", abline(0, 0),
     xlab = "Total Yards", ylab = "Residuals",
     main = sprintf("%s Model Residuals", name))  #plot residuals
+    print(name)
     print(summary(model)) # summarize model
 }
 
@@ -15,6 +16,7 @@ log_regression <- function(dataframe, name) {
     plot(fitted(model), resid(model), col = "green", abline(0, 0),
     xlab = "Total Yards", ylab = "Residuals",
     main = sprintf("%s Model Residuals", name))  #plot residuals
+    print(name)
     print(summary(model)) # summarize model
 }
 
@@ -61,17 +63,17 @@ scaled_df <- data.frame(scale(df))
 interaction_df <- make_interaction_terms(df)
 quadtratic_df <- make_quadtratic_terms(df)
 interaction_quad_df <- make_quadtratic_terms(interaction_df)
-base_model <- run_regression(df, "Base")
-scaled_model <- run_regression(scaled_df, "Scaled")
-interaction_model <- run_regression(interaction_df, "Interaction Terms")
-quadtratic_model <- run_regression(quadtratic_df, "Quadratic Terms")
-interaction_quadratic_model <- run_regression(interaction_quad_df, "Interaction and Quadratic Terms")
+base_model <- run_regression(df, "Standard Linear Regression")
+scaled_model <- run_regression(scaled_df, "Scaled Model - Linear Regression")
+interaction_model <- run_regression(interaction_df, "Linear Regression with Interaction Terms")
+quadtratic_model <- run_regression(quadtratic_df, "Linear Regression with Quadratic Terms")
+interaction_quadratic_model <- run_regression(interaction_quad_df, "Linear Regression with Interaction and Quadratic Terms")
 
 
 log_df <- filter(df, game_total_yards >= 0)
 log_df$log_game_total_yards <- log1p(log_df$game_total_yards)
 log_df <- subset(log_df, select = -game_total_yards)
-log_level <- log_regression(log_df, "Log Level")
+log_level <- log_regression(log_df, "Log Level Model - Linear Regression")
 
 position_hist <- ggplot(filtered, aes(x = game_total_yards)) +
 geom_histogram(aes(color = Position, fill = Position), bins = 100)
